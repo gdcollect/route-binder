@@ -7,6 +7,7 @@ use Leonc\RouteBinder\Builders\StrategyBuilder;
 class AssertionInvoker
 {
     public function __construct($model, $strategy){
+        $this->customFailMessage = null;
         $this->assertionBuilder = new AssertionBuilder($model);
         $this->strategy = StrategyBuilder::get($strategy);
     }
@@ -25,12 +26,20 @@ class AssertionInvoker
         }
     }
 
+    public function setFailMessage($message){
+        $this->customFailMessage = $message;
+        return $this;
+    }
+
     public function bind(){
         return $this->strategy->bind($this->assertionBuilder->getModel());
     }
 
     private function invoke($name, ...$params){
-        return $this->assertionBuilder->{$name}(...$params);
+        $this->assertionBuilder->setFailMessage($this->customFailMessage);
+        $result = $this->assertionBuilder->{$name}(...$params);
+        $this->setFailMessage(null);
+        return $result;
     }
 
     private function setStrategy(array $args){

@@ -7,25 +7,39 @@ class AssertionBuilder
     private $model;
 
     public function __construct($model){
+        $this->customFailMesssage = null;
         $this->model = $model;
-        $this->model_name = (new \ReflectionClass($this->model ))->getShortName();
-    }
-
-    private function makeResult($passess, $message){
-        return new AssertionResult($passess, "{$this->model_name}".$message, $this->model_name);
-    }
-
-    public function getModel(){
-        return $this->model;
+        $this->model_name = $this->getShortName($this->model);
     }
 
     public function belongsTo($class, $val, $key = null){
-        $name = (new \ReflectionClass(new $class ))->getShortName();
-        if(is_null($key)) $key = strtolower($name.'_id');
+        $name = $this->getShortName($class);
+        $key = $this->getPrimaryKey($name, $key);
         return $this->makeResult(
             $this->model->{$key} == $val,
             " has to belong to ${name} with key {$key} equal to {$val}"
         );
+    }
+
+    public function belongsToBy($targetClass, $agentClass, $val, $agentKey = null, $targetKey = null){
+        $agentName = $this->getShortName($agentClass); 
+        $targetName = $this->getShortName($targetClass);
+        $agentKey = $this->getPrimaryKey($agentName, $agentKey);
+        $targetKey = $this->getPrimaryKey($targetName, $targetKey);
+        
+        $agent = (new $agentClass)->find($this->model->{$agentKey});
+        if(is_null($agent)){
+            return $this->makeResult(
+                false,
+                " has to belongs to {$agentName} which belongs to ${targetName} with key {$targetKey} equal to {$val}"
+            );
+        }
+        else{
+            return $this->makeResult(
+                $agent->{$targetKey} == $val,
+                " has to belongs to {$agentName} which belongs to ${targetName} with key {$targetKey} equal to {$val}"
+            );
+        }
     }
 
     public function hasAttr($attr){
@@ -35,21 +49,21 @@ class AssertionBuilder
         );
     }
 
-    public function equals($attr, $val){
+    public function attrEquals($attr, $val){
         return $this->makeResult(
             $this->model->{$attr} == $val,
             "'s {$attr} attribute has to equal {$val}"
         );
     }
 
-    public function equalsStrong($attr, $val){
+    public function attrEqualsStrong($attr, $val){
         return $this->makeResult(
             $this->model->{$attr} === $val,
             "'s {$attr} attribute has to equal {$val}"
         );
     }
 
-    public function hasLength($attr, $length){
+    public function attrHasLength($attr, $length){
         if(is_countable($this->model->{$attr})){
             return $this->makeResult(
                 count($this->model->{$attr} ) == $length,
@@ -61,35 +75,35 @@ class AssertionBuilder
         }
     }
 
-    public function greaterThan($attr, $val){
+    public function attrGreaterThan($attr, $val){
         return $this->makeResult(
             $this->getAttrToComparison($attr) > $val,
             "'s {$attr} attribute has to be greater than {$val}"
         );
     }
 
-    public function greaterEqual($attr, $val){
+    public function attrGreaterEqual($attr, $val){
         return $this->makeResult(
             $this->getAttrToComparison($attr) >= $val,
             "'s {$attr} attribute has to be greater or equal {$val}"
         );
     }
 
-    public function lessThan($attr, $val){
+    public function attrLessThan($attr, $val){
         return $this->makeResult(
             $this->getAttrToComparison($attr) < $val,
             "'s {$attr} attribute has to be less than {$val}"
         );
     }
 
-    public function lessEqual($attr, $val){
+    public function attrLessEqual($attr, $val){
         return $this->makeResult(
             $this->getAttrToComparison($attr) <= $val,
             "'s {$attr} attribute has to be less or equal {$val}"
         );
     }
 
-    public function between($attr, $val1, $val2){
+    public function attrBetween($attr, $val1, $val2){
         $attribiute = $this->getAttrToComparison($attr);
         return $this->makeResult(
             $attribiute < max($val1, $val2)  && $attribiute > min($val1, $val2),
@@ -97,7 +111,7 @@ class AssertionBuilder
         );
     }
 
-    public function betweenEqual($attr, $val1, $val2){
+    public function attrBetweenEqual($attr, $val1, $val2){
         $attribiute = $this->getAttrToComparison($attr);
         return $this->makeResult(
             $attribiute <= max($val1, $val2)  && $attribiute >= min($val1, $val2),
@@ -107,10 +121,34 @@ class AssertionBuilder
 
     private function getAttrToComparison($attr){
         $field = $this->model->{$attr};
-        if(is_countable($field)) return count($field);
-        
+        if(is_countable($field)) return count($field);    
         return $field;
     }
 
+    private function getShortName($class){
+        return (new \ReflectionClass(new $class ))->getShortName();
+    }
+
+    private function getPrimaryKey($className, $key){
+        if(is_null($key)) return strtolower($className.'_id');
+        else return $key;
+    }
+    
+    private function makeResult($passess, $message){
+        return new AssertionResult($passess, $this->getFailMessage($message) , $this->model_name);
+    }
+
+    public function getModel(){
+        return $this->model;
+    }
+
+    public function getFailMessage($message){
+        if(is_null($this->customFailMessage)) return "{$this->model_name}".$message;
+        else return $this->customFailMessage;
+    }
+
+    public function setFailMessage($msg){
+        $this->customFailMessage = $msg;
+    }
     
 }
