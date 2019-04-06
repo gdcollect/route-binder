@@ -56,6 +56,14 @@ class AssertionBuilder
         );
     }
 
+    public function attrTruthy($attr){
+        return $this->attrEquals($attr, true);
+    }
+
+    public function attrFalsy($attr){
+        return $this->attrEquals($attr, false);
+    }
+
     public function attrEqualsStrong($attr, $val){
         return $this->makeResult(
             $this->model->{$attr} === $val,
