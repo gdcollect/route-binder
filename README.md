@@ -2,6 +2,9 @@
 
 Routebinder is a package designed to help you with clean model validation when using [Laravel route bindings](https://laravel.com/docs/5.8/routing#route-model-binding). Validation is just a series of chained rules, that have to be met, in order for a model to be returned. The process feels very much like phpunit type assertions.
 
+You can contact me: 
+leonczerwinski202@gmail.com
+
 ## Instalation ##
 
 ```bash
