@@ -18,6 +18,7 @@
 | returns | name |
 | --- | --- |
 | bool | ```belongsTo(string $class, $val, $key = null)``` |
+| bool | ```belongsToBy($targetClass, $agentClass, $val, $agentKey = null, $targetKey = null)``` |
 | bool | ```hasAttr(string $attr)``` |
 | bool | ```attrHasLength(string $attr, $length)``` |
 | bool | ```attrEquals(string $attr, $val)``` |
