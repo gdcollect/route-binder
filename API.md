@@ -1,7 +1,7 @@
 # Binder #
 
 ```php
-    static build(string $modelClass, $param, array $config = []);
+    static build(string $modelClass, $val, array $config = []);
 
     $config = [
         'strategy' => ''
@@ -32,13 +32,13 @@
 
     function attrLessThan(string $attr, $val);
 
-    function attrGreaterEqual(stirng $attr, $val);
+    function attrGreaterEqual(string $attr, $val);
     
     function attrLessEqual(string $attr, $val);
 
-    function attrBetween($attr, $val1, $val2);
+    function attrBetween(string $attr, $val1, $val2);
 
-    function attrBetweenEqual($attr, $val1, $val2)
+    function attrBetweenEqual(string $attr, $val1, $val2)
 ```
 
 # BaseStrategy #
