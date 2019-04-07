@@ -22,7 +22,7 @@ Route::bind('post', function($post_id) {
 });
 ```
 
-Let's make sure that it actually belongs to the authenticated user
+Now ensure that it actually belongs to the authenticated user
 
 ```php
 Route::bind('auth_post', function($post_id) {
