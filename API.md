@@ -1,55 +1,52 @@
+**Note**: Every method listed in this API is accessed inside an assertion chain. You don't manually initialize any of those classes.
+
 # Binder #
+| returns | name |
+| --- | --- |
+| AssertionBuilder | ```static build(string $modelClass, $val, array $config)```  |
+
+
 
 ```php
-    static build(string $modelClass, $val, array $config = []);
-
     $config = [
-        'strategy' => ''
+        'strategy' => 'Leonc\RouteBinder\Strategy\BaseStrategy'
         'relations' => []
     ];
 ```
 
 # AssertionBuilder #
-
-```php
-    function belongsTo(string $class, $val, $key = null);
-    
-    function belongsToBy(string $targetClass, string $agentClass, $val, $agentKey = null, $targetKey = null);
-
-    function hasAttr(string $attr);
-
-    function attrHasLength(string $attr, $length);
-
-    function attrEquals(string $attr, $val);
-
-    function attrEqualsStrong(string $attr, $val);
-
-    function attrTruthy(string $attr);
-    
-    function attrFalsy(string $attr);
-
-    function attrGreaterThan(string $attr, $val);
-
-    function attrLessThan(string $attr, $val);
-
-    function attrGreaterEqual(string $attr, $val);
-    
-    function attrLessEqual(string $attr, $val);
-
-    function attrBetween(string $attr, $val1, $val2);
-
-    function attrBetweenEqual(string $attr, $val1, $val2)
-```
+| returns | name |
+| --- | --- |
+| bool | ```belongsTo(string $class, $val, $key = null)``` |
+| bool | ```hasAttr(string $attr)``` |
+| bool | ```attrHasLength(string $attr, $length)``` |
+| bool | ```attrEquals(string $attr, $val)``` |
+| bool | ```attrEqualsStrong(string $attr, $val)``` |
+| bool | ```attrTruthy(string $attr)``` |
+| bool | ```attrFalsy(string $attr)``` |
+| bool | ```attrGreaterThan(string $attr, $val)``` |
+| bool | ```attrLessThan(string $attr, $val)``` |
+| bool | ```attrGreaterEqual(string $attr, $val)``` |
+| bool | ```attrLessEqual(string $attr, $val)``` |
+| bool | ```attrBetween(string $attr, $val1, $val2)``` |
+| bool | ```attrBetweenEqual(string $attr, $val1, $val2)``` |
 
 # BaseStrategy #
+| returns | name |
+| --- | --- |
+| HttpResponseException | ```fail($message, string $modelName)```  |
+| Model | ```bind(Model $model)```  |
+| Model | ```getModel(Model $rawInstance, string $key, array $relations)```  |
+| bool | ```exists(Model $model)```  |
 
-```php
-    function fail($message, string $modelName);
 
-    function bind(Model $model);
+# AssertionInvoker #
+| returns | name |
+| --- | --- |
+| $this | failMessage($message = null)  |
+| $this | persistFailMessage($message)  |
+| $this | strategy($class = null)  |
+| $this | persistStrategy(string $class)  |
+| Model | bind() |
 
-    function getModel(Model $rawInstance, string $key, array $relations);
-
-    bool exists(Model $model);
-```
 
