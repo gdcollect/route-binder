@@ -14,6 +14,7 @@ use Leonc\RouteBinder\Binder;
 ```
 
 ## Basic usage ##
+*Make sure to also check out the [API](https://github.com/boring-leon/route-binder/blob/master/API.md).*
 Let's bind a Post model to our route
 ```php
 Route::bind('post', function($post_id) {
