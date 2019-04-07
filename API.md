@@ -1,7 +1,7 @@
 # Binder #
 
 ```php
-    static function build(string $modelClass, $param, array $config = []);
+    static build(string $modelClass, $param, array $config = []);
 
     $config = [
         'strategy' => ''
@@ -39,6 +39,17 @@
     function attrBetween($attr, $val1, $val2);
 
     function attrBetweenEqual($attr, $val1, $val2)
+```
 
+# BaseStrategy #
+
+```php
+    function fail($message, string $modelName);
+
+    function bind(Model $model);
+
+    function getModel($model, string $key, array $relations);
+
+    bool exists(Model $model);
 ```
 
