@@ -27,20 +27,20 @@ class Binder
         return $instance->getInvoker();
     }
 
-    public function setStrategy($strategy){
+    public function getInvoker(){
+        return $this->invoker;
+    }
+
+    private function setStrategy($strategy){
         $this->strategy = StrategyBuilder::get($strategy);
     }
     
-    public function setInvoker(){
+    private function setInvoker(){
         $this->invoker = new AssertionInvoker($this->model, $this->strategy);
     }
     
-    public function setModel(){
+    private function setModel(){
         $builder = new ModelBuilder($this->modelClass, $this->param, $this->strategy, $this->relations);
         $this->model = $builder->getModelOrFail();
-    }
-
-    public function getInvoker(){
-        return $this->invoker;
     }
 }
