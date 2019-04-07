@@ -112,17 +112,17 @@ class AssertionBuilder
     }
 
     public function attrBetween($attr, $val1, $val2){
-        $attribiute = $this->getAttrToComparison($attr);
+        $attribute  = $this->getAttrToComparison($attr);
         return $this->makeResult(
-            $attribiute < max($val1, $val2)  && $attribiute > min($val1, $val2),
+            $attribute  < max($val1, $val2)  && $attribute  > min($val1, $val2),
             "'s {$attr} attribute has to be between {$val1},{$val2} (excluding values)"
         );
     }
 
     public function attrBetweenEqual($attr, $val1, $val2){
-        $attribiute = $this->getAttrToComparison($attr);
+        $attribute  = $this->getAttrToComparison($attr);
         return $this->makeResult(
-            $attribiute <= max($val1, $val2)  && $attribiute >= min($val1, $val2),
+            $attribute  <= max($val1, $val2)  && $attribute  >= min($val1, $val2),
             "'s {$attr} attribute has to be between {$val1},{$val2} (including values)"
         );
     }
