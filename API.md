@@ -48,7 +48,7 @@
 
     function bind(Model $model);
 
-    function getModel($model, string $key, array $relations);
+    function getModel(Model $rawInstance, string $key, array $relations);
 
     bool exists(Model $model);
 ```
