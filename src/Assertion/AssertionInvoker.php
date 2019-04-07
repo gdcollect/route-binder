@@ -10,8 +10,8 @@ class AssertionInvoker
         $this->assertionBuilder = new AssertionBuilder($model);
         $this->strategy = StrategyBuilder::get(null);
         $this->customFailMessage = null;
-        $this->isStrategyPresistent = false;
-        $this->isFailMessagePresistent = false;
+        $this->isStrategyPersistant = false;
+        $this->isFailMessagePersistant = false;
     }
     
     public function __call($method, $args){
@@ -38,28 +38,28 @@ class AssertionInvoker
     }
 
     public function failMessage($message = null){
-        if(!$this->isFailMessagePresistent){
+        if(!$this->isFailMessagePersistant){
             $this->customFailMessage = $message;
         }
         return $this;
     }
 
-    public function presistFailMessage($message){
+    public function persistFailMessage($message){
         $this->customFailMessage = $message;
-        $this->isFailMessagePresistent = true;
+        $this->isFailMessagePersistant = true;
         return $this;
     }
 
     public function strategy($class = null){
-        if(!$this->isStrategyPresistent){
+        if(!$this->isStrategyPersistant){
             $this->strategy = StrategyBuilder::get($class);
         }
         return $this;
     }
 
-    public function presistStrategy($class){
+    public function persistStrategy($class){
         $this->strategy = StrategyBuilder::get($class);
-        $this->isStrategyPresistent = true;
+        $this->isStrategyPersistant = true;
         return $this;
     }
 
