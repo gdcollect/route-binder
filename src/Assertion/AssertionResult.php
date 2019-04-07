@@ -4,14 +4,14 @@ namespace Leonc\RouteBinder\Assertion;
 
 class AssertionResult
 {
-    public function __construct($passess, $message, $modelName){
-        $this->passess = $passess;
+    public function __construct($passes, $message, $modelName){
+        $this->passes = $passes;
         $this->message = $message;
         $this->modelName = $modelName;
     }
     
-    public function passess(){
-        return $this->passess;
+    public function passes(){
+        return $this->passes;
     }
     
     public function getFailMessage(){

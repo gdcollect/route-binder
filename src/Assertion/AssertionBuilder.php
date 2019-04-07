@@ -7,7 +7,7 @@ class AssertionBuilder
     private $model;
 
     public function __construct($model){
-        $this->customFailMesssage = null;
+        $this->customFailMessage = null;
         $this->model = $model;
         $this->model_name = $this->getShortName($this->model);
     }
@@ -27,7 +27,7 @@ class AssertionBuilder
         $agentKey = $this->getPrimaryKey($agentName, $agentKey);
         $targetKey = $this->getPrimaryKey($targetName, $targetKey);
         
-        $agent = (new $agentClass)->find($this->model->{$agentKey});
+        $agent = (new $agentClass)->find($this->getVal($agentKey));
         if(is_null($agent)){
             return $this->makeResult(
                 false,
@@ -51,7 +51,7 @@ class AssertionBuilder
 
     public function attrEquals($attr, $val){
         return $this->makeResult(
-            $this->model->{$attr} == $val,
+            $this->getVal($attr) == $val,
             "'s {$attr} attribute has to equal {$val}"
         );
     }
@@ -66,7 +66,7 @@ class AssertionBuilder
 
     public function attrEqualsStrong($attr, $val){
         return $this->makeResult(
-            $this->model->{$attr} === $val,
+            $this->getVal($attr) === $val,
             "'s {$attr} attribute has to equal {$val}"
         );
     }
@@ -74,10 +74,16 @@ class AssertionBuilder
     public function attrHasLength($attr, $length){
         if(is_countable($this->model->{$attr})){
             return $this->makeResult(
-                count($this->model->{$attr} ) == $length,
+                count( $this->getVal($attr) ) == $length,
                 "'s {$attr} attribute has to have length {$length}"
             );
-        } 
+        }
+        else if(is_numeric($this->getVal($attr))){
+            return $this->makeResult(
+                $this->getVal($attr) == $length,
+                "'s {$attr} attribute has to equal {$length}"
+            );
+        }
         else{
             return $this->makeResult(false, "'s {$attr} has to be countable!" );
         }
@@ -141,9 +147,13 @@ class AssertionBuilder
         if(is_null($key)) return strtolower($className.'_id');
         else return $key;
     }
+
+    private function getVal($attr){
+        return $this->model->{$attr};
+    }
     
-    private function makeResult($passess, $message){
-        return new AssertionResult($passess, $this->getFailMessage($message) , $this->model_name);
+    private function makeResult($passes, $message){
+        return new AssertionResult($passes, $this->getFailMessage($message) , $this->model_name);
     }
 
     public function getModel(){

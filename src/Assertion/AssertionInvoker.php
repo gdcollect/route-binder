@@ -16,7 +16,7 @@ class AssertionInvoker
     
     public function __call($method, $args){
         $result = $this->invoke($method, ...$args);
-        if(!$result->passess()){
+        if(!$result->passes()){
             $this->strategy->fail(
                 $result->getFailMessage(), $result->getModelName()
             );
