@@ -1,9 +1,11 @@
 ## Intoduction ##
 
-Routebinder is a package designed to help you with clean model validation when using [Laravel route bindings](https://laravel.com/docs/5.8/routing#route-model-binding). Validation is just a series of chained rules, that have to be met, in order for a model to be returned. The process feels very much like phpunit type assertions.
+Routebinder is a package designed to help you with clean model validation when using [Laravel route bindings](https://laravel.com/docs/5.8/routing#route-model-binding). Validation is just a series of chained rules, that have to be met, in order for a model to be returned. The process feels very much like chaining an eloquent query.
 
 You can contact me: 
 leonczerwinski202@gmail.com
+
+*Make sure to also check out the [API](https://github.com/boring-leon/route-binder/blob/master/API.md) and watch [yotube tutorial](https://youtu.be/p4m0C3remo4)*
 
 ## Instalation ##
 
@@ -17,7 +19,6 @@ use Leonc\RouteBinder\Binder;
 ```
 
 ## Basic usage ##
-*Make sure to also check out the [API](https://github.com/boring-leon/route-binder/blob/master/API.md).*
 Let's bind a Post model to our route
 ```php
 Route::bind('post', function($post_id) {
